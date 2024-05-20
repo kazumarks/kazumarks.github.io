@@ -1,6 +1,8 @@
 # Emerald ACE Codes I have made
 ## Thumb-ARM Bootstrap (JAP)
 
+Place the sacrifice Pokemon on Box 9, Slot 27 then execute this code.
+
 ```arm
 mov r1, pc ; 4679
 ldr r0, [pc, #0x24] ; 4809 ; Sets r0 to 0x3024
