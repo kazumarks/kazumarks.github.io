@@ -1,7 +1,5 @@
 # Emerald ACE Codes I have made
 
-Most are for Japanese as that language is easier to write ACE codes for
-
 ## Thumb-ARM Bootstrap (JAP)
 
 Name any Pokemon \[ちッいぃ␣\] then write these box names and execute.
@@ -15,7 +13,7 @@ Box  3: び み ぶ モ ミ び や ぃ	[びみぶモミびやぃ]
 51 08 60 48 60 00 E0 FF FF 
 47 20 48 73 70 47 24 30 FF
 ```
-How does the setup code works:
+How the setup code works:
 
 ```arm
 mov r1, pc ; 4679
@@ -33,7 +31,7 @@ bx lr ; 4770
 .halfword 0x3024
 ```
 
-How does bootstrap nickname work \[ちッいぃ␣び\]:
+How the bootstrap nickname works \[ちッいぃ␣び\]:
 ```
 add r0, pc, #0x44 ; A011 @ Store address of next word of next box slot
 add r0, #0x2 ; 3002 @ Misaligns PC, essential for console ARM codes
@@ -51,7 +49,7 @@ Box  6: ア ア ア ￥ ￥ _ _	[アアア￥￥  ]
 Box  7: ア ア つ ぃ _ _	[アアつぃ  ]
 Box  8: ア _ ぞ _ _	[ア ぞ  ]
 ```
-
+Refer to Sleipnir17's codes on how are yy and zz variables are determined:\
 $ = (ZZ)(zz)\
 ￥  = (YY)(yy)
 
