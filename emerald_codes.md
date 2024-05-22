@@ -4,7 +4,6 @@ Most are for Japanese as that language is easier to write ACE codes for
 
 ## Thumb-ARM Bootstrap (JAP)
 
-This is a Thumb code, do not execute
 Name any Pokemon (ちッィふ␣) then write these box names and execute.
 
 ```text
