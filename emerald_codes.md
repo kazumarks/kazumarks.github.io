@@ -1,44 +1,76 @@
 # Emerald ACE Codes I have made
+
+Most are for Japanese as that language is easier to write ACE codes for
+
 ## Thumb-ARM Bootstrap (JAP)
 
-Place the sacrifice Pokemon on Box 9, Slot 27 then execute this code.
+This is a Thumb code, do not execute
+Name any Pokemon (ちッィふ␣) then write these box names and execute.
+
+```text
+Box  1: ル ば ギ ゲ け は _ み	[ルばギゲけは み]
+Box  2: ア く タ ぶ タ _ l	[アくタぶタ l]
+Box  3: び み ぶ モ ミ び や ぃ	[びみぶモミびやぃ]
+
+79 46 88 8A 09 1A 00 20 FF 
+51 08 60 48 60 00 E0 FF FF 
+47 20 48 73 70 47 24 30 FF
+```
+How does the setup code works:
 
 ```arm
 mov r1, pc ; 4679
-ldr r0, [pc, #0x24] ; 4809 ; Sets r0 to 0x3024
+ldrh r0, [r1, #0x14] ; 8A88 ; Sets r0 to 0x3024
 subs r1, r1, r0 ; 1A09 ; Sets r1 to address of Box 9, Slot 27
-subs r2, r2, r2 ; 1A92 ; Sets r2 to 0
+mov r0, 0 ; 2000 ; Sets r0 to 0
 ; 51FF - filler
-str r2, [r1] ; 600A  ; The next few opcodes will blank the PID and TID
-str r2, [r1, 4] ; 604A
+str r0, [r1] ; 6008  ; PID = 0
+str r0, [r1, 4] ; 6048 ; OTID = 0
 b #4 ; E000
 ; FFFF - skipped
-str r2, [r1, 12] ; 60CA
-strh r2, [r1, 16] ; 820A
-ldr r0, [pc, 12] ; 4803 ; Loads ARM code to misalign PC
-str r0, [r1, 20] ; 6148 ; Stores ARM code in OT
-; 51FF - filler
-ldr r0, [pc, 16] ; 4804 - Load nickname
-str r0, [r1, 8] ; 6088 - Store nickname
+mov r0, 0x47 ; 2047
+strb r0, [r1, 13] ; 7348 ; Complete bootstrap nickname 
 bx lr ; 4770
-; FFFF
-.word 0xE0DF03BE ; E0DF03BE - ldrh r0, [pc], #0x3e, misalign and skip
-.word 0x00003024 ; 3024 0000 - Address of box 9
-.word 0x4700A000 ; A000 4700 - adr r0, 0, bx r0 - Switch to ARM
+.halfword 0x3024
 ```
 
-```text
-Box  1: ル ば け ぶ け は ヂ は	[ルばけぶけはヂは]
-Box  2: ア こ タ ぼ タ _ l	[アこタぼタ l]
-Box  3: P タ こ ェ う ぶ ぶ チ	[Pタこェうぶぶチ]
-Box  4: ア え ぶ ギ タ ミ び	[アえぶギタミび]
-Box  5: D う k l や ぃ _ _	[Dうklやぃ  ]
-Box  6: ア ア ア _ ッ _ び	[アアア ッ び]
+How does bootstrap nickname work [ちッィふ ␣び]:
+```
+add r0, pc, 0x44 ; A011 @ Store address of next word of next box slot
+add r0, r0, 2 ; 1C80 @ Misaligns PC, essential for console ARM codes
+bx r0 ; 4700 @ Jump to next box slot and switch to ARM
+```
+## Create EGG from Nothing
 
-79 46 09 48 09 1A 92 1A FF 
-51 0A 60 4A 60 00 E0 FF FF 
-CA 60 0A 82 03 48 48 61 FF 
-51 04 48 88 60 70 47 FF FF 
-BE 03 DF E0 24 30 00 00 FF 
-51 51 51 00 A0 00 47 FF FF 
+```text
+Box  1: ル ば す ぶ け は こ ぶ	[ルばすぶけはこぶ]
+Box  2: ア き ぼ ィ ね _ l	[アきぼィね l]
+Box  3: か め ぼ ミ N ゥ け ぼ	[かめぼミNゥけぼ]
+Box  4: ア こ ガ ィ ね _ l	[アこガィね l]
+Box  5: ぶ ゥ ミ び $ $ _ _	[ぶゥミび$$  ]
+Box  6: ア ア ア ￥ ￥ _ _	[アアア￥￥  ]
+Box  7: ア ア つ ぃ _ _	[アアつぃ  ]
+Box  8: ア _ ぞ _ _	[ア ぞ  ]
+```
+
+$ = (ZZ)(zz)
+￥  = (YY)(yy)
+
+```arm
+mov r1,pc
+ldr r0,[pc,52]
+subs r1,r1,r0 ; Set r1 to address of Box 9, Slot 27
+ldr r0,[pc, 40] ; Load YYyy
+ldr r2,[pc, 28] ; Load ZZzz
+adds r0,r0,r2 ; Calculate species number
+b 4
+movs r2, 0x6 ; isEgg = true, isSpecies = true
+strb r2,[r1,1] ; Store isEgg and isSpecies flag
+strh r0,[r1,0xE] ; Store species
+ldr r2, [pc,36] ; Load substructure egg flag
+strh r2, [r1,56] ; Store egg flag in substructure
+b 4
+adds r0, r0, r2 ; (species + 0x4000) = final checksum
+strh r0,[r1,0xA] ; store final checksum, ignore upper 16 bits of final checksum
+bx lr
 ```
