@@ -66,7 +66,7 @@ ACE does not work on those hypervisors (as of June 4th 2024), for reasons I do n
 
 ## Bonus: Creating an Thumb-ARM bootstrap
 
-0x085F executes the box names in the Thumb instruction set. That means codes meant for 0x0615/0x6789 will not work without a bootstrap. This is fine for Japanese as most codes in that language (with exception to E-Sh4rk's ACE codes) being written in Thumb. Here is the box name code that will generate a Thumb-ARM bootstrap in Box 9, Slot 27:
+0x085F executes the box names in the Thumb instruction set. That means codes meant for 0x0615/0x6789 will not work without a bootstrap. This is fine for Japanese as most codes in that language (with exception to E-Sh4rk's ACE codes) being written in Thumb. Here is the box name code that will generate a Thumb-ARM bootstrap in Box 9, Slot 27 for those ARM codes:
 
 ```text
 Box  1: ル ば か ぶ け は き ッ	[ルばかぶけはきッ]
