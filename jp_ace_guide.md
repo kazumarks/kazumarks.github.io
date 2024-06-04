@@ -62,7 +62,7 @@ For this case, you most likely made a mistake in Box 3 or Box 4's name.
 
 ### GBARunner2/3
 
-ACE does not work on those hypervisors (as of June 4th 2024), for reasons I do not know. They are somehow more inaccurate than VBA.
+ACE does not work on those hypervisors (as of June 4th 2024), for reasons I do not know.
 
 ## Bonus: Creating an Thumb-ARM bootstrap
 
