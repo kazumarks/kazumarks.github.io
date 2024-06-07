@@ -4,7 +4,7 @@
 
 This code has similar limitations to the original ARM version of this code (do not stay on the summary for too long, get into a battle as quick as possible etc.)
 
-Calculate vvVVuuUU, wwWWzzZZ through the same method that Sleipnir17's codes use. You can also generate a code through copying [this](####e---change-prng-seed-and-freeze) to the code generator.
+Calculate vvVVuuUU, wwWWzzZZ through the same method that Sleipnir17's codes use. You can also generate a code through copying [this](#input-for-e-sh4rk-code-generator) to the code generator.
 
 ```text
 Box  1: く べ か み く タ く べ	[くべかみくタくべ]
@@ -46,7 +46,7 @@ bx lr ; 4770
 
 ## Place Any PID in Daycare
 
-Calculate vvVVuuUU, wwWWzzZZ through the same method that Sleipnir17's codes use. You can also generate a code through copying [this](#e---place-any-pid-in-daycare) to the code generator.
+Calculate vvVVuuUU, wwWWzzZZ through the same method that Sleipnir17's codes use. You can also generate a code through copying [this](#input-for-e-sh4rk-code-generator) to the code generator.
 
 ```text
 Box  1: ル ば か ぶ け は き ッ	[ルばかぶけはきッ]
