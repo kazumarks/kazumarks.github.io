@@ -1,18 +1,57 @@
 # Emerald ACE Codes I have made
 
+## Change and freeze PRNG seed
+
+This code has similar limitations to the original ARM version of this code (do not stay on the summary for too long, get into a battle as quick as possible etc.)
+
+```text
+Box  1: く べ か み く タ く べ	[くべかみくタくべ]
+; Use べ from the blue layer
+Box  2: _ い み く ミ _ l	[ いみくミ l]
+Box  3: き べ く ぶ こ ぼ ィ ね	[きべくぶこぼィね]
+; Use べ from the blue layer
+Box  4: _ く タ ミ び	[ くタミび]
+Box  5: ゾ わ い い ベ ら _ う	[ゾわいいベら う]
+; Use べ from the red layer
+Box  6: _ _ _ l コ _ う _	[   lコ う ]
+Box  7: ア ア * ° § @ _ _	[アア*°§@  ]
+index of *=VV; index of °=vv; index of §=UU; index of @=uu
+Box  8: ア * ° § @ _ _ _	[ア*°§@   ]
+index of *=ZZ; index of °=zz; index of §=WW; index of @=ww
+```
+
+Some of the comments were directly lifted from the documentation on [E-Sh4rk's%20Code%20Generator](https://e-sh4rk.github.io/CodeGenerator/?lang=jap).
+
+```arm-asm
+ldr r1, [pc, #0x18] ; 4908 @ r1 = gBattleTypeFlags (0x02022c90)
+mov r0, #0x6 ; 2006 @ bit 24,21,20,19,18,17,16 or 1 (LE) of gBattleTypeFlags must be activated
+str r0, [r1] ; 6008
+ldr r1, [pc, #0x20] ; 4908 @ r1 = inBattle (0x03002799)
+mov r0, #0x2 ; 2002 @ bit 1 of inBattle must be activated (but preferably not bit 0 and 2)
+strb r0, [r1] ; 7008
+b #0x4 ; E000
+ldr r1, [pc, #0x1C] ; 4907 @ r1 = PRNG state (0x0x03005AE0)
+ldr r0, [pc, #0x20] ; 4808 @ r0 = uuUUvvVV
+ldr r2, [pc, #0x28] ; 4A0A @ r2 = wwWWzzZZ
+add r0, r0, r2 ; 1880 @ r0 + r2 = xxXXyyYY
+str r0, [r1] ; 6008
+bx lr ; 4770
+
+.word 0x02022c90
+.word 0x03002799
+.word 0x03005AE0
+```
+
 ## Thumb-ARM Bootstrap (JAP)
 
-Name any Pokemon \[ちッいぃ␣\] then write these box names and execute.
+Name any Pokemon \[ちッいぃ␣\] place it in Box 9, Slot 27 then write these box names and execute.
 
 ```text
 Box  1: ル ば ギ ゲ け は _ み	[ルばギゲけは み]
 Box  2: ア く タ ぶ タ _ l	[アくタぶタ l]
 Box  3: び み ぶ モ ミ び や ぃ	[びみぶモミびやぃ]
-
-79 46 88 8A 09 1A 00 20 FF 
-51 08 60 48 60 00 E0 FF FF 
-47 20 48 73 70 47 24 30 FF
 ```
+
 How the setup code works:
 
 ```arm
@@ -37,6 +76,7 @@ add r0, pc, #0x44 ; A011 @ Store address of next word of next box slot
 add r0, #0x2 ; 3002 @ Misaligns PC, essential for console ARM codes
 bx r0 ; 4700 @ Jump to next box slot and switch to ARM
 ```
+
 ## Create EGG from Nothing
 
 ```text
@@ -70,4 +110,59 @@ b 4
 adds r0, r0, r2 ; (species + 0x4000) = final checksum
 strh r0,[r1,#0xA] ; store final checksum, ignore upper 16 bits of final checksum
 bx lr
+```
+
+## Input for E-Sh4rk Code Generator
+
+### Change PRNG Seed and Freeze
+
+```text
+@@ title = "Change PRNG Seed (JAP, 0x085F)"
+@@ author = "Sleipnir (Shao + Papa Jefe Translation)"
+@@ exit = null
+
+; Uses species 0x085F execution in Japanese Emerald.
+; Remember to double-check the smaller "lowercase" Japanese characters.
+; For example: ィ vs. イ
+
+Seed = 0x1234ABCD
+
+xx ?= (Seed & 0xFF000000)>>24
+XX ?= (Seed & 0xFF0000)>>16
+yy ?= (Seed & 0xFF00)>>8
+YY ?= (Seed & 0xFF)
+neg = 0x80000000
+
+ww?= ((0xB6-xx) & neg)? ( ((0xB9-xx)&neg)?(((0xEE-xx)&neg)?(xx-0xEE):0):(xx-0xB6)):0
+uu?= ((0xB6-xx) & neg)? ( ((0xB9-xx)&neg)?(((0xEE-xx)&neg)?(0xEE):xx):(0xB6)):xx
+WW?= ((0xB6-XX) & neg)? ( ((0xB9-XX)&neg)?(((0xEE-XX)&neg)?(XX-0xEE):0):(XX-0xB6)):0
+UU?= ((0xB6-XX) & neg)? ( ((0xB9-XX)&neg)?(((0xEE-XX)&neg)?(0xEE):XX):(0xB6)):XX
+
+zz?= ((0xB6-yy) & neg)? ( ((0xB9-yy)&neg)?(((0xEE-yy)&neg)?(yy-0xEE):0):(yy-0xB6)):0
+vv?= ((0xB6-yy) & neg)? ( ((0xB9-yy)&neg)?(((0xEE-yy)&neg)?(0xEE):yy):(0xB6)):yy
+ZZ?= ((0xB6-YY) & neg)? ( ((0xB9-YY)&neg)?(((0xEE-YY)&neg)?(YY-0xEE):0):(YY-0xB6)):0
+VV?= ((0xB6-YY) & neg)? ( ((0xB9-YY)&neg)?(((0xEE-YY)&neg)?(0xEE):YY):(0xB6)):YY
+
+UVdata = ((uu<<24)|(UU<<16)|(vv<<8)|VV)
+ZWdata = ((ww<<24)|(WW<<16)|(zz<<8)|ZZ)
+address = 0x03005AE0
+
+@@
+
+0x20064908
+0x49086008
+0x200200FF
+0xE0007008
+0x4907FFFF
+0x4A0A4808
+0x00FF1880
+0x47706008
+0xFFFFFFFF
+0x02022c90
+0x03002799
+{address}
+0x5151FF00
+{UVdata}
+0x51FF0000
+{ZWdata}
 ```
