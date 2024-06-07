@@ -146,7 +146,7 @@ bx lr
 <details>
 	<summary>Change PRNG Seed and Freeze</summary>
 	<pre>
-    @@ title = "Change PRNG Seed (JAP, 0x085F)"
+@@ title = "Change PRNG Seed (JAP, 0x085F)"
 @@ author = "Sleipnir (Shao + Papa Jefe Translation)"
 @@ exit = null
 
@@ -200,7 +200,7 @@ address = 0x03005AE0
 <details>
     <summary>Place any PID in Daycare</summary>
     <pre>
-    @@ title = "Change PRNG Seed (JAP, 0x085F)"
+@@ title = "Change PRNG Seed (JAP, 0x085F)"
 @@ author = "Sleipnir (Shao + Papa Jefe Translation)"
 @@ exit = null
 
