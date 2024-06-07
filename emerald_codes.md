@@ -143,10 +143,10 @@ bx lr
 
 ## Input for E-Sh4rk Code Generator
 
-### E - Change PRNG Seed and Freeze
-
-```text
-@@ title = "Change PRNG Seed (JAP, 0x085F)"
+<details>
+	<summary>Change PRNG Seed and Freeze</summary>
+	<pre>
+    @@ title = "Change PRNG Seed (JAP, 0x085F)"
 @@ author = "Sleipnir (Shao + Papa Jefe Translation)"
 @@ exit = null
 
@@ -194,12 +194,13 @@ address = 0x03005AE0
 {UVdata}
 0x51FF0000
 {ZWdata}
-```
+	</pre>
+</details>
 
-### E - Place any PID in Daycare
-
-```text
-@@ title = "Change PRNG Seed (JAP, 0x085F)"
+<details>
+    <summary>Place any PID in Daycare</summary>
+    <pre>
+    @@ title = "Change PRNG Seed (JAP, 0x085F)"
 @@ author = "Sleipnir (Shao + Papa Jefe Translation)"
 @@ exit = null
 
@@ -238,5 +239,6 @@ ZWdata = ((ww<<24)|(WW<<16)|(zz<<8)|ZZ)
 0
 {UVdata}
 {ZWdata}
+    </pre>
+</details>
 
-```
