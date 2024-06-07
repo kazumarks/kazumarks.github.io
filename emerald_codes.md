@@ -4,6 +4,8 @@
 
 This code has similar limitations to the original ARM version of this code (do not stay on the summary for too long, get into a battle as quick as possible etc.)
 
+Calculate vvVVuuUU, wwWWzzZZ through the same method that Sleipnir17's codes use. You can also generate a code through copying [this](###E%20-%20Change%20PRNG%20Seed%20and%20Freeze) to the code generator.
+
 ```text
 Box  1: く べ か み く タ く べ	[くべかみくタくべ]
 ; Use べ from the blue layer
@@ -15,12 +17,12 @@ Box  5: ゾ わ い い ベ ら _ う	[ゾわいいベら う]
 ; Use べ from the red layer
 Box  6: _ _ _ l コ _ う _	[   lコ う ]
 Box  7: ア ア * ° § @ _ _	[アア*°§@  ]
-index of *=VV; index of °=vv; index of §=UU; index of @=uu
+; index of *=VV; index of °=vv; index of §=UU; index of @=uu
 Box  8: ア * ° § @ _ _ _	[ア*°§@   ]
-index of *=ZZ; index of °=zz; index of §=WW; index of @=ww
+; index of *=ZZ; index of °=zz; index of §=WW; index of @=ww
 ```
 
-Some of the comments were directly lifted from the documentation on [E-Sh4rk's%20Code%20Generator](https://e-sh4rk.github.io/CodeGenerator/?lang=jap).
+Some of the comments were directly lifted from the documentation on [E-Sh4rk's Code Generator](https://e-sh4rk.github.io/CodeGenerator/?lang=jap).
 
 ```arm-asm
 ldr r1, [pc, #0x18] ; 4908 @ r1 = gBattleTypeFlags (0x02022c90)
@@ -40,6 +42,33 @@ bx lr ; 4770
 .word 0x02022c90
 .word 0x03002799
 .word 0x03005AE0
+```
+
+## Place Any PID in Daycare
+
+Calculate vvVVuuUU, wwWWzzZZ through the same method that Sleipnir17's codes use. You can also generate a code through copying [this](###E%20-%20Place%20any%20PID%20in%20Daycare) to the code generator.
+
+```text
+Box  1: ル ば か ぶ け は き ッ	[ルばかぶけはきッ]
+Box  2: _ し N X ね _ l	[ しNXね l]
+Box  3: こ タ ミ び _ _ _ _	[こタミび    ]
+Box  4: _ く ゾ _ _ _ _ _	[ くゾ     ]
+Box  5: * ° § @  \ | ~ >	[*°§@\|~>]
+; index of *=VV; index of °=vv; index of §=UU; index of @=uu
+; index of \=ZZ; index of |=zz; index of ~=WW; index of >=ww
+```
+
+```arm-asm
+mov r1, pc ; 4679
+ldr r0, [pc, #0x18] ; 4806
+sub r1, r1, r0 ; 1A09
+add r0, pc, #0x1C ; A007
+ldmia r0!, {r2, r3} ; C80C
+add r2, r2, r3 ; 18D2
+b #4 ; E000
+str r2, [r1] ; 600A
+bx lr ; 4770
+.word 0x00009008
 ```
 
 ## Thumb-ARM Bootstrap (JAP)
@@ -114,7 +143,7 @@ bx lr
 
 ## Input for E-Sh4rk Code Generator
 
-### Change PRNG Seed and Freeze
+### E - Change PRNG Seed and Freeze
 
 ```text
 @@ title = "Change PRNG Seed (JAP, 0x085F)"
@@ -165,4 +194,49 @@ address = 0x03005AE0
 {UVdata}
 0x51FF0000
 {ZWdata}
+```
+
+### E - Place any PID in Daycare
+
+```text
+@@ title = "Change PRNG Seed (JAP, 0x085F)"
+@@ author = "Sleipnir (Shao + Papa Jefe Translation)"
+@@ exit = null
+
+; Uses species 0x085F execution in Japanese Emerald.
+; Remember to double-check the smaller "lowercase" Japanese characters.
+; For example: ィ vs. イ
+
+Seed = 0x1234ABCD
+
+xx ?= (Seed & 0xFF000000)>>24
+XX ?= (Seed & 0xFF0000)>>16
+yy ?= (Seed & 0xFF00)>>8
+YY ?= (Seed & 0xFF)
+neg = 0x80000000
+
+ww?= ((0xB6-xx) & neg)? ( ((0xB9-xx)&neg)?(((0xEE-xx)&neg)?(xx-0xEE):0):(xx-0xB6)):0
+uu?= ((0xB6-xx) & neg)? ( ((0xB9-xx)&neg)?(((0xEE-xx)&neg)?(0xEE):xx):(0xB6)):xx
+WW?= ((0xB6-XX) & neg)? ( ((0xB9-XX)&neg)?(((0xEE-XX)&neg)?(XX-0xEE):0):(XX-0xB6)):0
+UU?= ((0xB6-XX) & neg)? ( ((0xB9-XX)&neg)?(((0xEE-XX)&neg)?(0xEE):XX):(0xB6)):XX
+
+zz?= ((0xB6-yy) & neg)? ( ((0xB9-yy)&neg)?(((0xEE-yy)&neg)?(yy-0xEE):0):(yy-0xB6)):0
+vv?= ((0xB6-yy) & neg)? ( ((0xB9-yy)&neg)?(((0xEE-yy)&neg)?(0xEE):yy):(0xB6)):yy
+ZZ?= ((0xB6-YY) & neg)? ( ((0xB9-YY)&neg)?(((0xEE-YY)&neg)?(YY-0xEE):0):(YY-0xB6)):0
+VV?= ((0xB6-YY) & neg)? ( ((0xB9-YY)&neg)?(((0xEE-YY)&neg)?(0xEE):YY):(0xB6)):YY
+
+UVdata = ((uu<<24)|(UU<<16)|(vv<<8)|VV)
+ZWdata = ((ww<<24)|(WW<<16)|(zz<<8)|ZZ)
+
+@@
+
+0x4904A008
+0xC80C1A41
+0x18D251FF
+0x4770600A
+0x9028
+0
+{UVdata}
+{ZWdata}
+
 ```
