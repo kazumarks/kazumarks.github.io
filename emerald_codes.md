@@ -4,7 +4,7 @@
 
 This code has similar limitations to the original ARM version of this code (do not stay on the summary for too long, get into a battle as quick as possible etc.)
 
-Calculate vvVVuuUU, wwWWzzZZ through the same method that Sleipnir17's codes use. You can also generate a code through copying [this](#input-for-e-sh4rk-code-generator) to the code generator.
+Calculate vvVVuuUU, wwWWzzZZ through the same method that Sleipnir17's codes use. Or you can use the version that is available on [E-Sh4rk's Code Generator](https://e-sh4rk.github.io/CodeGenerator)
 
 ```text
 Box  1: く べ か み く タ く べ	[くべかみくタくべ]
@@ -140,103 +140,6 @@ adds r0, r0, r2 ; (species + 0x4000) = final checksum
 strh r0,[r1,#0xA] ; store final checksum, ignore upper 16 bits of final checksum
 bx lr
 ```
-
-## Input for E-Sh4rk Code Generator
-
-<details>
-	<summary>Change PRNG Seed and Freeze</summary>
-	<pre>
-@@ title = "Change PRNG Seed (JAP, 0x085F)"
-@@ author = "Sleipnir (Shao + Papa Jefe Translation)"
-@@ exit = null
-
-; Uses species 0x085F execution in Japanese Emerald.
-; Remember to double-check the smaller "lowercase" Japanese characters.
-; For example: ィ vs. イ
-
-Seed = 0x1234ABCD
-
-xx ?= (Seed & 0xFF000000)>>24
-XX ?= (Seed & 0xFF0000)>>16
-yy ?= (Seed & 0xFF00)>>8
-YY ?= (Seed & 0xFF)
-neg = 0x80000000
-
-ww?= ((0xB6-xx) & neg)? ( ((0xB9-xx)&neg)?(((0xEE-xx)&neg)?(xx-0xEE):0):(xx-0xB6)):0
-uu?= ((0xB6-xx) & neg)? ( ((0xB9-xx)&neg)?(((0xEE-xx)&neg)?(0xEE):xx):(0xB6)):xx
-WW?= ((0xB6-XX) & neg)? ( ((0xB9-XX)&neg)?(((0xEE-XX)&neg)?(XX-0xEE):0):(XX-0xB6)):0
-UU?= ((0xB6-XX) & neg)? ( ((0xB9-XX)&neg)?(((0xEE-XX)&neg)?(0xEE):XX):(0xB6)):XX
-
-zz?= ((0xB6-yy) & neg)? ( ((0xB9-yy)&neg)?(((0xEE-yy)&neg)?(yy-0xEE):0):(yy-0xB6)):0
-vv?= ((0xB6-yy) & neg)? ( ((0xB9-yy)&neg)?(((0xEE-yy)&neg)?(0xEE):yy):(0xB6)):yy
-ZZ?= ((0xB6-YY) & neg)? ( ((0xB9-YY)&neg)?(((0xEE-YY)&neg)?(YY-0xEE):0):(YY-0xB6)):0
-VV?= ((0xB6-YY) & neg)? ( ((0xB9-YY)&neg)?(((0xEE-YY)&neg)?(0xEE):YY):(0xB6)):YY
-
-UVdata = ((uu<<24)|(UU<<16)|(vv<<8)|VV)
-ZWdata = ((ww<<24)|(WW<<16)|(zz<<8)|ZZ)
-address = 0x03005AE0
-
-@@
-
-0x20064908
-0x49086008
-0x200200FF
-0xE0007008
-0x4907FFFF
-0x4A0A4808
-0x00FF1880
-0x47706008
-0xFFFFFFFF
-0x02022c90
-0x03002799
-{address}
-0x5151FF00
-{UVdata}
-0x51FF0000
-{ZWdata}
-	</pre>
-</details>
-
-<details>
-    <summary>Place any PID in Daycare</summary>
-    <pre>
-@@ title = "Change PRNG Seed (JAP, 0x085F)"
-@@ author = "Sleipnir (Shao + Papa Jefe Translation)"
-@@ exit = null
-
-; Uses species 0x085F execution in Japanese Emerald.
-; Remember to double-check the smaller "lowercase" Japanese characters.
-; For example: ィ vs. イ
-
-Seed = 0x1234ABCD
-
-xx ?= (Seed & 0xFF000000)>>24
-XX ?= (Seed & 0xFF0000)>>16
-yy ?= (Seed & 0xFF00)>>8
-YY ?= (Seed & 0xFF)
-neg = 0x80000000
-
-ww?= ((0xB6-xx) & neg)? ( ((0xB9-xx)&neg)?(((0xEE-xx)&neg)?(xx-0xEE):0):(xx-0xB6)):0
-uu?= ((0xB6-xx) & neg)? ( ((0xB9-xx)&neg)?(((0xEE-xx)&neg)?(0xEE):xx):(0xB6)):xx
-WW?= ((0xB6-XX) & neg)? ( ((0xB9-XX)&neg)?(((0xEE-XX)&neg)?(XX-0xEE):0):(XX-0xB6)):0
-UU?= ((0xB6-XX) & neg)? ( ((0xB9-XX)&neg)?(((0xEE-XX)&neg)?(0xEE):XX):(0xB6)):XX
-
-zz?= ((0xB6-yy) & neg)? ( ((0xB9-yy)&neg)?(((0xEE-yy)&neg)?(yy-0xEE):0):(yy-0xB6)):0
-vv?= ((0xB6-yy) & neg)? ( ((0xB9-yy)&neg)?(((0xEE-yy)&neg)?(0xEE):yy):(0xB6)):yy
-ZZ?= ((0xB6-YY) & neg)? ( ((0xB9-YY)&neg)?(((0xEE-YY)&neg)?(YY-0xEE):0):(YY-0xB6)):0
-VV?= ((0xB6-YY) & neg)? ( ((0xB9-YY)&neg)?(((0xEE-YY)&neg)?(0xEE):YY):(0xB6)):YY
-
-UVdata = ((uu<<24)|(UU<<16)|(vv<<8)|VV)
-ZWdata = ((ww<<24)|(WW<<16)|(zz<<8)|ZZ)
-
-@@
-
-0x4904A008
-0xC80C1A41
-0x18D251FF
-0x4770600A
-0x9028
-0
 {UVdata}
 {ZWdata}
     </pre>
