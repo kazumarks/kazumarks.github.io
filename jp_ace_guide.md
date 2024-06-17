@@ -29,8 +29,8 @@ Box  7: ぁ m ぅ コ く く _ _	[ぁmぅコくく  ]
 **Read this if you are using an emulator that is not mGBA 0.9.0+**
 
 There is a well known issue where box name codes does not work as it does on console. To fix this make the following changes to the box names:
-- `/` --> `B` in Box 2
-- `い` --> `_` in Box 6
+- `/` &rarr; `B` in Box 2
+- `い` &rarr; `_` in Box 6
 
 Then hatch the 0x0615 egg and check Box 10, Slot 19. There should be a glitch Pokemon with species name `あ*` with * representing the new line character. To make sure that we actually have the correct Pokemon, change the name of Box 1 to ` ぶ びぅコくく` and view the summary. If you are brought back to the overworld, you have the correct Pokemon.
 
